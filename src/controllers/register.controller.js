@@ -1,3 +1,9 @@
 const register = (req, res, next) => {
-  console.log("hello req");
+  try {
+    res.status(200).json({ st: "success" });
+  } catch (error) {
+    next(error);
+  }
 };
+
+module.exports = register;
