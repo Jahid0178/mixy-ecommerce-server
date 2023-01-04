@@ -27,6 +27,10 @@ const authSchema = new mongoose.Schema(
       type: String,
       default: avatar,
     },
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
