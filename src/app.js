@@ -5,7 +5,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
-const errorHandle = require("./middlewares/error.middleware");
+const { errorHandle } = require("./middlewares/index");
 const authRoute = require("./routes/auth.route");
 const homeRoute = require("./routes/home.route");
 const productsRoute = require("./routes/products.route");
