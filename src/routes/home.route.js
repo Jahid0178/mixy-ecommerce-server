@@ -6,7 +6,7 @@ const staticPath = path.join(path.join(__dirname, "../views"));
 const options = {
   root: staticPath,
 };
-console.log(staticPath);
+
 router.get("/", (req, res) => {
   res.sendFile("index.html", options);
 });

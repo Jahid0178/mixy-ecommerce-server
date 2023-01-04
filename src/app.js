@@ -1,21 +1,16 @@
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
-const cloudinary = require("cloudinary");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
-const errorHandle = require("./middleware/error.middleware");
+const errorHandle = require("./middlewares/error.middleware");
 const authRoute = require("./routes/auth.route");
 const homeRoute = require("./routes/home.route");
+const productsRoute = require("./routes/products.route");
 const notFoundRoute = require("./routes/404.route");
+const config = require("./configs/index");
 const app = express();
-
-//config
-cloudinary.config({
-  cloud_name: "drozfikhs",
-  api_key: "461444462997198",
-  api_secret: "3BKz9BfQP1ov_xAFjT2m8p8S1dQ",
-});
 
 //cors option setup
 const corsOptions = {
@@ -29,6 +24,7 @@ const corsOptions = {
 app.use(morgan("combined"));
 app.use(express.json());
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
 //error handling
 app.use(errorHandle);
@@ -36,5 +32,8 @@ app.use(errorHandle);
 //routes
 app.use(homeRoute);
 app.use("/api/auth", authRoute);
+app.use("/api", productsRoute);
+
 app.use(notFoundRoute);
+
 module.exports = app;

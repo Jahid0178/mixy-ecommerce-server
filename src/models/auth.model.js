@@ -16,13 +16,14 @@ const authSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "password is required!"],
-      min: [6, "please! chose password morethan 6 charactar"],
+      min: [6, "please! chose password more then 6 charactar"],
       max: [12, "please! chose password lessthan 12 charactar"],
     },
     address: {
       type: String,
       default: "Chittagong,Bangladesh.",
     },
+
     img: {
       type: String,
       default: avatar,
