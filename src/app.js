@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const bodyParser = require("body-parser");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -25,6 +26,12 @@ app.use(morgan("combined"));
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
 
 //error handling
 app.use(errorHandle);

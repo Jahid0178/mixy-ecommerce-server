@@ -4,6 +4,6 @@ module.exports.findProducts = function (req, res, next) {
   try {
     return res.status(200).json("jkfckjbvb");
   } catch (error) {
-    next(new Error(error));
+    next(error);
   }
 };
