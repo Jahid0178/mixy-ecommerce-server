@@ -1,13 +1,16 @@
 const express = require("express");
 const { check, validationResult } = require("express-validator");
 const { productValidate } = require("../middlewares/index");
-const { findProducts } = require("../controllers/findProducts.controller");
-const saveProduct = require("../controllers/saveProduct.controller");
+const {
+  getAllProducts,
+  saveProductController,
+} = require("../controllers/index");
+
 const router = express.Router();
 
 //find product
-router.get("/products", findProducts);
+router.get("/getProducts", getAllProducts);
 
 //save product
-router.post("/products", productValidate(), saveProduct);
+router.post("/saveProducts", saveProductController);
 module.exports = router;

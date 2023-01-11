@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -10,7 +11,6 @@ const authRoute = require("./routes/auth.route");
 const homeRoute = require("./routes/home.route");
 const productsRoute = require("./routes/products.route");
 const notFoundRoute = require("./routes/404.route");
-const config = require("./configs/index");
 const app = express();
 
 //cors option setup
@@ -26,7 +26,7 @@ app.use(morgan("combined"));
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());
-
+app.use(helmet());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -39,6 +39,7 @@ app.use(errorHandle);
 //routes
 app.use(homeRoute);
 app.use("/api/auth", authRoute);
+
 app.use("/api", productsRoute);
 
 app.use(notFoundRoute);

@@ -1,15 +1,17 @@
 const User = require("../models/auth.model");
 var jwt = require("jsonwebtoken");
+const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const { loginUser } = require("../utils/loginUser");
 
 const register = async (req, res, next) => {
   const { name, email, password } = req.body;
+  const errors = validationResult(req);
 
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
-    if (name == undefined || email == undefined || password == undefined) {
-      return res.status(200).json({ message: "please provide user info" });
-    }
     const checkUser = await User.findOne({ email: email });
     if (!checkUser) {
       const hashPassword = await bcrypt.hash(password, 12);
