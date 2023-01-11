@@ -1,10 +1,14 @@
 const { check, validationResult } = require("express-validator");
+const config = require("config");
+const cloudName = config.get("cloudinary.cloud_name");
+const api_key = config.get("cloudinary.api_key");
+const api_secret = config.get("cloudinary.api_secret");
 const cloudinary = require("cloudinary").v2;
 const multiparty = require("multiparty");
 cloudinary.config({
-  cloud_name: "drozfikhs",
-  api_key: "461444462997198",
-  api_secret: "3BKz9BfQP1ov_xAFjT2m8p8S1dQ",
+  cloud_name: cloudName,
+  api_key: api_key,
+  api_secret: api_secret,
 });
 const saveProduct = (req, res, next) => {
   let error;
