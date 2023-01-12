@@ -24,6 +24,7 @@ const corsOptions = {
 //middleware
 app.use(morgan("combined"));
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(helmet());
