@@ -5,26 +5,18 @@ cloudinary.config({
   api_secret: "3BKz9BfQP1ov_xAFjT2m8p8S1dQ",
 });
 const cloudinaryUpload = (path, folderName) => {
-  let success;
-  cloudinary.uploader.upload(
-    path,
-    { folder: folderName },
-    async (err, result) => {
-      if (err) {
-        const res = {
-          res: err,
-          success: false,
-        };
-        return res;
-      } else {
-        const res = {
-          res: result,
-          success: true,
-        };
-        return res;
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.upload(
+      path,
+      { folder: folderName },
+      async (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result);
       }
-    }
-  );
+    );
+  });
 };
 
 module.exports = cloudinaryUpload;

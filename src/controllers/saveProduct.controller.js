@@ -5,6 +5,7 @@ const api_key = config.get("cloudinary.api_key");
 const api_secret = config.get("cloudinary.api_secret");
 const cloudinary = require("cloudinary").v2;
 const multiparty = require("multiparty");
+const { cloudinaryUpload } = require("../middlewares/index");
 cloudinary.config({
   cloud_name: cloudName,
   api_key: api_key,
@@ -23,27 +24,18 @@ const saveProduct = (req, res, next) => {
       if (err) {
         next(err);
       }
-      const { title, description, price, rating, stock, brand, category } =
-        fields;
 
       const { images } = files;
       images.map(async (path) => {
-        cloudinary.uploader.upload(
-          path.path,
-          { folder: "products" },
-          async (err, result) => {
-            if (err) {
-              console.log(error);
-              error = err;
-            } else {
-              console.log("result", result);
-              urls.push(result);
-            }
-          }
-        );
+        cloudinaryUpload(path.path, "products")
+          .then((data) => urls.push(data.url))
+          .catch((err) => {
+            error = err.message;
+          });
       });
-      if (error) {
-        return res.status(404).json({ msg: error });
+      if (!error) {
+        res.status(500).json({ msg: "something wrong! please try again." });
+        return;
       }
 
       setTimeout(() => {
