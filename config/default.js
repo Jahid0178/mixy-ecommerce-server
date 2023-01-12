@@ -2,7 +2,7 @@ require("dotenv").config();
 const config = {
   server: {
     host: "http://localhost:",
-    PORT: 5000,
+    PORT: process.env.PORT || 5000,
     DB_URI: process.env.DB_URI,
   },
   cloudinary: {

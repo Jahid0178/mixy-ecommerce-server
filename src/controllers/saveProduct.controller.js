@@ -1,4 +1,5 @@
 const { check, validationResult } = require("express-validator");
+const Products = require("../models/products.model");
 const config = require("config");
 const cloudName = config.get("cloudinary.cloud_name");
 const api_key = config.get("cloudinary.api_key");
@@ -13,7 +14,8 @@ cloudinary.config({
 });
 const saveProduct = (req, res, next) => {
   let error;
-  const urls = [];
+  let image = [];
+  let thumbnails;
   try {
     const errors = validationResult(req);
     const form = new multiparty.Form();
@@ -24,22 +26,45 @@ const saveProduct = (req, res, next) => {
       if (err) {
         next(err);
       }
+      const { title, description, price, rating, stock, brand, category } =
+        fields;
 
-      const { images } = files;
+      const { thumbnail, images } = files;
+      cloudinaryUpload(thumbnail.path, "products")
+        .then((data) => image.push(data.url))
+        .catch((err) => {
+          error = err.message;
+        });
       images.map(async (path) => {
         cloudinaryUpload(path.path, "products")
-          .then((data) => urls.push(data.url))
+          .then((data) => (thumbnails = data.url))
           .catch((err) => {
             error = err.message;
           });
       });
       if (!error) {
-        res.status(500).json({ msg: "something wrong! please try again." });
-        return;
+        return res
+          .status(500)
+          .json({ msg: "something wrong! please try again." });
       }
-
+      const product = await Products.create({
+        title: title,
+        description: description,
+        stock: stock,
+        thumbnail: thumbnail,
+        images: image.map((url) => url),
+        brand: brand,
+        category: category,
+        rating: rating,
+        price: price,
+      });
+      if (!product) {
+        return res
+          .status(404)
+          .json({ msg: "something wrong! please try again." });
+      }
       setTimeout(() => {
-        return res.status(200).json({ urls: urls });
+        return res.status(200).json({ product });
       }, 3000);
     });
   } catch (error) {

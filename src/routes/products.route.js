@@ -12,5 +12,5 @@ const router = express.Router();
 router.get("/getProducts", getAllProducts);
 
 //save product
-router.post("/saveProducts", saveProductController);
+router.post("/saveProducts", productValidate(), saveProductController);
 module.exports = router;
