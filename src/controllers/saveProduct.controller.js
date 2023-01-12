@@ -1,17 +1,9 @@
 const { check, validationResult } = require("express-validator");
 const Products = require("../models/products.model");
-const config = require("config");
-const cloudName = config.get("cloudinary.cloud_name");
-const api_key = config.get("cloudinary.api_key");
-const api_secret = config.get("cloudinary.api_secret");
-const cloudinary = require("cloudinary").v2;
+
 const multiparty = require("multiparty");
 const { cloudinaryUpload } = require("../middlewares/index");
-cloudinary.config({
-  cloud_name: cloudName,
-  api_key: api_key,
-  api_secret: api_secret,
-});
+
 const saveProduct = (req, res, next) => {
   let error;
   let image = [];
