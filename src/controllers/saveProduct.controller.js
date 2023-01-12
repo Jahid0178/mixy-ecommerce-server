@@ -5,15 +5,14 @@ const multiparty = require("multiparty");
 const { cloudinaryUpload } = require("../middlewares/index");
 
 const saveProduct = (req, res, next) => {
-  let error;
   let image = [];
   let thumbnails;
   try {
     const errors = validationResult(req);
     const form = new multiparty.Form();
-    // if (!errors.isEmpty()) {
-    //   return res.status(400).json({ errors: errors.array() });
-    // }
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     form.parse(req, async (err, fields, files) => {
       if (err) {
         next(err);
@@ -28,7 +27,7 @@ const saveProduct = (req, res, next) => {
           thumbnails = data.url;
         })
         .catch((err) => {
-          next(err);
+          return next(err.message);
         });
       images.map(async (path) => {
         cloudinaryUpload(path.path, "products")
@@ -36,8 +35,7 @@ const saveProduct = (req, res, next) => {
             image.push(data.url);
           })
           .catch((err) => {
-            next(err);
-            error = err.message;
+            return next(err.message);
           });
       });
 
@@ -63,7 +61,7 @@ const saveProduct = (req, res, next) => {
       }, 3000);
     });
   } catch (error) {
-    next(error);
+    return next(error.message);
   }
 };
 module.exports = saveProduct;
