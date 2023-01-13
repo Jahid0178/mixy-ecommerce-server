@@ -11,6 +11,7 @@ const authRoute = require("./routes/auth.route");
 const homeRoute = require("./routes/home.route");
 const productsRoute = require("./routes/products.route");
 const notFoundRoute = require("./routes/404.route");
+const saleOverviewRoute = require("./routes/sale.overview.route");
 const app = express();
 
 //cors option setup
@@ -42,6 +43,7 @@ app.use(homeRoute);
 app.use("/api/auth", authRoute);
 
 app.use("/api", productsRoute);
+app.use("/api", saleOverviewRoute);
 
 app.use(notFoundRoute);
 

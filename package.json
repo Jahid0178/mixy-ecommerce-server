@@ -23,7 +23,8 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.2",
     "morgan": "^1.10.0",
-    "multiparty": "^4.2.3"
+    "multiparty": "^4.2.3",
+    "pdfkit": "^0.13.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
